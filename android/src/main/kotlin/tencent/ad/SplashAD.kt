@@ -16,19 +16,19 @@ import com.qq.e.comm.util.AdError
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import tencent.ad.O.TAG
-import tencent.ad.TencentAD.Companion.activity
+import tencent.ad.TencentADPlugin.Companion.activity
 
 class SplashAD(
         context: Context,
         messenger: BinaryMessenger?,
-        private val posId: String,
+        private val poID: String,
         bgPic: String?,
         private var instance: SplashAD?
 ) : SplashADListener {
-    private val methodChannel = MethodChannel(messenger, O.SPLASH_AD_ID)
+    private val methodChannel = MethodChannel(messenger, O.splashID)
     private val container = FrameLayout(context)
 
-    fun showAD() = fetchSplashAD(activity, null, O.APP_ID, posId, this, 0)
+    fun showAD() = fetchSplashAD(activity, null, O.appID, poID, this, 0)
 
     fun closeAD() {
         methodChannel.setMethodCallHandler(null)
@@ -42,7 +42,7 @@ class SplashAD(
      * @param activity        展示广告的activity
      * @param skipContainer   自定义的跳过按钮：只需绘制样式
      * @param appID           应用ID
-     * @param posId           广告位ID
+     * @param posID           广告位ID
      * @param adListener      广告状态监听器
      * @param fetchDelay      拉取广告的超时时长：[3000, 5000]，0为默认
      */
@@ -51,26 +51,15 @@ class SplashAD(
             activity: Activity,
             skipContainer: View?,
             appID: String,
-            posId: String,
+            posID: String,
             adListener: SplashADListener,
             fetchDelay: Int
     ) {
         if (instance != null) return
         instance = skipContainer?.let {
-            SplashAD(activity, it, appID, posId, adListener, fetchDelay)
-        } ?: SplashAD(activity, appID, posId, adListener, fetchDelay)
+            SplashAD(activity, it, appID, posID, adListener, fetchDelay)
+        } ?: SplashAD(activity, appID, posID, adListener, fetchDelay)
         instance!!.fetchAndShowIn(container)
-    }
-
-    override fun onADDismissed() {
-        closeAD()
-        methodChannel.invokeMethod("onAdDismiss", null)
-    }
-
-    override fun onNoAD(e: AdError) {
-        methodChannel.invokeMethod("onNoAD", null)
-        Log.i(TAG, "SplashAD onNoAD:无广告 错误码:${e.errorCode} ${e.errorMsg}")
-        closeAD()
     }
 
     init {
@@ -80,8 +69,8 @@ class SplashAD(
                 val manager = activity.packageManager
                 val resources = manager.getResourcesForApplication(bgPic
                         .substring(0, bgPic.indexOf(":")))
-                val resId = resources.getIdentifier(bgPic, null, null)
-                container.background = ContextCompat.getDrawable(context, resId)
+                val resourceID = resources.getIdentifier(bgPic, null, null)
+                container.background = ContextCompat.getDrawable(context, resourceID)
             } catch (e: Exception) {
                 Log.i(TAG, "广告背景未获取, 资源:$bgPic", e)
             }
@@ -90,9 +79,20 @@ class SplashAD(
         activity.addContentView(container, LayoutParams(MATCH_PARENT, MATCH_PARENT))
     }
 
-    override fun onADPresent() = methodChannel.invokeMethod("onAdPresent", null)
+    override fun onADExposure() = methodChannel.invokeMethod("onADExposure", null)
+    override fun onADPresent() = methodChannel.invokeMethod("onADPresent", null)
     override fun onADLoaded(time: Long) = methodChannel.invokeMethod("onADLoaded", time)
     override fun onADClicked() = methodChannel.invokeMethod("onADClicked", null)
     override fun onADTick(time: Long) = methodChannel.invokeMethod("onADTick", time)
-    override fun onADExposure() = methodChannel.invokeMethod("onADExposure", null)
+
+    override fun onADDismissed() {
+        closeAD()
+        methodChannel.invokeMethod("onADDismissed", null)
+    }
+
+    override fun onNoAD(error: AdError) {
+        methodChannel.invokeMethod("onNoAD", null)
+        Log.i(TAG, "SplashAD onNoAD:无广告 错误码:${error.errorCode} ${error.errorMsg}")
+        closeAD()
+    }
 }

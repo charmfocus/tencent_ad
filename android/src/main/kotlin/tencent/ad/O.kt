@@ -1,11 +1,13 @@
 package tencent.ad
 
+@Suppress("SpellCheckingInspection")
 object O {
-    const val TAG = "调试日志"
-    var APP_ID = ""
-    const val PLUGIN_ID = "tencent.ad"
-    const val BANNER_AD_ID = "$PLUGIN_ID/banner"
-    const val SPLASH_AD_ID = "$PLUGIN_ID/splash"
-    const val INTERS_AD_ID = "$PLUGIN_ID/inters"
-    const val NATIVE_AD_ID = "$PLUGIN_ID/native"
+    const val TAG = "腾讯广告调试日志"
+    var appID = ""
+    const val pluginID = "tencent_ad"
+    const val bannerID = "$pluginID/banner"
+    const val splashID = "$pluginID/splash"
+    const val intersID = "$pluginID/inters"
+    const val nativeID = "$pluginID/native"
+    const val rewardID = "$pluginID/reward"
 }

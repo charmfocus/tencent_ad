@@ -9,6 +9,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.platform.PlatformView
+import tencent.ad.TencentADPlugin.Companion.activity
 
 /**
  * @param id 调用次数
@@ -18,9 +19,9 @@ class BannerAD(messenger: BinaryMessenger,
                id: Int,
                params: Map<String, Any>
 ) : PlatformView, MethodCallHandler, UnifiedBannerADListener {
-    private val posId = "${params["posId"]}"
-    private val bannerView = UnifiedBannerView(TencentAD.activity, O.APP_ID, posId, this)
-    private val methodChannel = MethodChannel(messenger, "${O.BANNER_AD_ID}_$id")
+    private val posID = "${params["posID"]}"
+    private val bannerView = UnifiedBannerView(activity, O.appID, posID, this)
+    private val methodChannel = MethodChannel(messenger, "${O.bannerID}_$id")
 
     init {
         methodChannel.setMethodCallHandler(this)

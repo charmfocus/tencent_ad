@@ -10,14 +10,14 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import tencent.ad.O.APP_ID
 import tencent.ad.O.TAG
-import tencent.ad.TencentAD.Companion.activity
+import tencent.ad.O.appID
+import tencent.ad.TencentADPlugin.Companion.activity
 
-class IntersAD(private val posId: String, messenger: BinaryMessenger) :
+class IntersAD(private val posID: String, messenger: BinaryMessenger) :
         MethodCallHandler, UnifiedInterstitialADListener {
     private var intersAD: UnifiedInterstitialAD? = null
-    private val methodChannel = MethodChannel(messenger, O.INTERS_AD_ID + "_" + posId)
+    private val methodChannel = MethodChannel(messenger, O.intersID + "_" + posID)
 
     init {
         methodChannel.setMethodCallHandler(this)
@@ -34,7 +34,7 @@ class IntersAD(private val posId: String, messenger: BinaryMessenger) :
                 result.success(true)
             }
             "closeAD" -> {
-                closeAd()
+                closeAD()
                 result.success(true)
             }
             else -> result.notImplemented()
@@ -47,7 +47,7 @@ class IntersAD(private val posId: String, messenger: BinaryMessenger) :
             intersAD!!.destroy()
             intersAD = null
         }
-        intersAD = UnifiedInterstitialAD(activity, APP_ID, posId, this)
+        intersAD = UnifiedInterstitialAD(activity, appID, posID, this)
         return intersAD
     }
 
@@ -62,13 +62,13 @@ class IntersAD(private val posId: String, messenger: BinaryMessenger) :
         intersAD?.setVideoPlayPolicy(option.autoPlayPolicy)
     }
 
-    fun closeAd() {
+    fun closeAD() {
         if (intersAD != null) {
             intersAD!!.destroy()
             intersAD = null
         }
         methodChannel.setMethodCallHandler(null)
-        TencentAD.removeInterstitial(posId)
+        TencentADPlugin.removeInterstitial(posID)
     }
 
     override fun onNoAD(error: AdError) {

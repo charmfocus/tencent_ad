@@ -24,8 +24,6 @@ flutter:
         pluginClass: TencentADPlugin
       ios:
         pluginClass: TencentADPlugin
-      macos:
-        pluginClass: TencentADPlugin
 
   
   

@@ -1,13 +1,21 @@
 import 'dart:async';
-
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:tencent_ad/o.dart';
+export 'tencent_ad.dart';
+export 'native.dart';
+export 'splash.dart';
+export 'banner.dart';
+export 'inters.dart';
 
-class TencentAd {
-  static const MethodChannel _channel =
-      const MethodChannel('tencent_ad');
+class TencentADPlugin {
+  static const MethodChannel channel = const MethodChannel(pluginID);
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
+  static Future<bool> config({@required String appID}) async =>
+      await channel.invokeMethod('config', {'appID': appID});
+
+  static Future<String> get tencentADVersion async {
+    final String version = await channel.invokeMethod('getPlatformVersion');
     return version;
   }
 }
