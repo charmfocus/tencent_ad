@@ -13,7 +13,6 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.platform.PlatformView
 
-
 class NativeAD(
         context: Context,
         messenger: BinaryMessenger,
@@ -29,7 +28,6 @@ class NativeAD(
     init {
         methodChannel.setMethodCallHandler(this)
     }
-
 
     override fun getView(): View {
         methodChannel.invokeMethod("getView", null)

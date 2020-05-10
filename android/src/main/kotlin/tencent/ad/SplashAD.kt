@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.FrameLayout.LayoutParams
 import android.widget.FrameLayout.LayoutParams.MATCH_PARENT
-import androidx.core.content.ContextCompat
 import com.qq.e.ads.splash.SplashAD
 import com.qq.e.ads.splash.SplashADListener
 import com.qq.e.comm.util.AdError
@@ -21,17 +20,15 @@ import tencent.ad.TencentADPlugin.Companion.activity
 class SplashAD(
         context: Context,
         messenger: BinaryMessenger?,
-        private val poID: String,
-        bgPic: String?,
+        private val posID: String,
         private var instance: SplashAD?
 ) : SplashADListener {
-    private val methodChannel = MethodChannel(messenger, O.splashID)
+    private val methodChannel = MethodChannel(messenger, "${O.splashID}_$posID")
     private val container = FrameLayout(context)
 
-    fun showAD() = fetchSplashAD(activity, null, O.appID, poID, this, 0)
+    fun showAD() = fetchSplashAD(activity, null, O.appID, posID, this, 0)
 
-    fun closeAD() {
-        methodChannel.setMethodCallHandler(null)
+    private fun closeAD() {
         val parent = container.parent as ViewGroup
         parent.removeView(container)
         instance = null
@@ -55,35 +52,25 @@ class SplashAD(
             adListener: SplashADListener,
             fetchDelay: Int
     ) {
+        Log.i(TAG, "fetchSplashAD: ${O.splashID}_$posID")
         if (instance != null) return
         instance = skipContainer?.let {
             SplashAD(activity, it, appID, posID, adListener, fetchDelay)
         } ?: SplashAD(activity, appID, posID, adListener, fetchDelay)
         instance!!.fetchAndShowIn(container)
+        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
     }
 
     init {
         container.setBackgroundColor(Color.WHITE)
-        if (bgPic != null) {
-            try {
-                val manager = activity.packageManager
-                val resources = manager.getResourcesForApplication(bgPic
-                        .substring(0, bgPic.indexOf(":")))
-                val resourceID = resources.getIdentifier(bgPic, null, null)
-                container.background = ContextCompat.getDrawable(context, resourceID)
-            } catch (e: Exception) {
-                Log.i(TAG, "广告背景未获取, 资源:$bgPic", e)
-            }
-        }
-        container.layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
         activity.addContentView(container, LayoutParams(MATCH_PARENT, MATCH_PARENT))
     }
 
     override fun onADExposure() = methodChannel.invokeMethod("onADExposure", null)
     override fun onADPresent() = methodChannel.invokeMethod("onADPresent", null)
-    override fun onADLoaded(time: Long) = methodChannel.invokeMethod("onADLoaded", time)
+    override fun onADLoaded(time: Long) = methodChannel.invokeMethod("onADLoaded", null)
     override fun onADClicked() = methodChannel.invokeMethod("onADClicked", null)
-    override fun onADTick(time: Long) = methodChannel.invokeMethod("onADTick", time)
+    override fun onADTick(time: Long) = methodChannel.invokeMethod("onADTick", null)
 
     override fun onADDismissed() {
         closeAD()

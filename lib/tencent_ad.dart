@@ -18,4 +18,8 @@ class TencentADPlugin {
     final String version = await channel.invokeMethod('getPlatformVersion');
     return version;
   }
+
+  static Future<bool> toastIntersAD({@required String posID}) async {
+    return await channel.invokeMethod('loadIntersAD', {'posID': posID});
+  }
 }
