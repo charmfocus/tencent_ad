@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_ad/o.dart';
 export 'tencent_ad.dart';
-export 'native.dart';
+export 'native_render.dart';
+export 'native_template.dart';
 export 'splash.dart';
 export 'banner.dart';
 export 'inters.dart';
@@ -26,5 +27,9 @@ class TencentADPlugin {
 
   static Future<bool> toastRewardAD({@required String posID}) async {
     return await channel.invokeMethod('loadRewardAD', {'posID': posID});
+  }
+
+  static Future<bool> createNativeRender({@required String posID}) async {
+    return await channel.invokeMethod('loadNativeRender', {'posID': posID});
   }
 }

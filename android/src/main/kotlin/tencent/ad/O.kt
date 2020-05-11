@@ -8,6 +8,7 @@ object O {
     const val bannerID = "$pluginID/banner"
     const val splashID = "$pluginID/splash"
     const val intersID = "$pluginID/inters"
+    const val nativeDIYID = "$pluginID/native_diy"
     const val nativeID = "$pluginID/native"
     const val rewardID = "$pluginID/reward"
 }

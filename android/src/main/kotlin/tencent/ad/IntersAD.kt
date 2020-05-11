@@ -9,9 +9,11 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 
-class IntersAD(private val posID: String, messenger: BinaryMessenger?) :
-        MethodCallHandler, UnifiedInterstitialADListener {
-    private var iad: UnifiedInterstitialAD? = null
+class IntersAD(
+        private val posID: String,
+        messenger: BinaryMessenger?
+) : MethodCallHandler, UnifiedInterstitialADListener {
+    private var intersAD: UnifiedInterstitialAD? = null
     private val methodChannel = MethodChannel(messenger, "${O.intersID}_$posID")
 
     init {
@@ -33,9 +35,9 @@ class IntersAD(private val posID: String, messenger: BinaryMessenger?) :
     }
 
     fun closeAD() {
-        if (iad != null) {
-            iad!!.destroy()
-            iad = null
+        if (intersAD != null) {
+            intersAD!!.destroy()
+            intersAD = null
         }
         methodChannel.setMethodCallHandler(null)
         TencentADPlugin.removeInterstitial(posID)
@@ -43,11 +45,11 @@ class IntersAD(private val posID: String, messenger: BinaryMessenger?) :
 
     private val iAD: UnifiedInterstitialAD
         get() {
-            if (iad != null) {
-                return iad!!
+            if (intersAD != null) {
+                return intersAD!!
             }
-            iad = UnifiedInterstitialAD(TencentADPlugin.activity, O.appID, posID, this)
-            return iad!!
+            intersAD = UnifiedInterstitialAD(TencentADPlugin.activity, O.appID, posID, this)
+            return intersAD!!
         }
 
     private fun showAD() {
@@ -55,13 +57,13 @@ class IntersAD(private val posID: String, messenger: BinaryMessenger?) :
     }
 
     override fun onNoAD(error: AdError) {
-        iad = null
+        intersAD = null
         methodChannel.invokeMethod("onNoAD", null)
         Log.i(O.TAG, "IntersAD onNoAD:无广告 错误码:${error.errorCode} ${error.errorMsg}")
     }
 
     override fun onADClosed() {
-        iad = null
+        intersAD = null
         methodChannel.invokeMethod("onADClosed", null)
     }
 

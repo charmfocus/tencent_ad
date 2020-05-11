@@ -11,9 +11,10 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import tencent.ad.TencentADPlugin.Companion.activity
 
-class RewardAD(private val posID: String, messenger: BinaryMessenger) :
-        MethodCallHandler,
-        RewardVideoADListener {
+class RewardAD(
+        private val posID: String,
+        messenger: BinaryMessenger
+) : MethodCallHandler, RewardVideoADListener {
     private val methodChannel = MethodChannel(messenger, "${O.rewardID}_$posID")
     private lateinit var rewardVideoAD: RewardVideoAD
 

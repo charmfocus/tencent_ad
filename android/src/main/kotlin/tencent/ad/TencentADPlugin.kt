@@ -40,6 +40,12 @@ class TencentADPlugin : MethodCallHandler {
                 rewardMap[posID] = RewardAD(posID, registrar.messenger())
                 result.success(true)
             }
+            "loadNativeRender" -> {
+                val posID = "${arguments["posID"]}"
+                if (rewardMap.containsKey(posID)) rewardMap[posID]?.closeAD()
+                renderMap[posID] = NativeADDIY(activity, posID, registrar.messenger())
+                result.success(true)
+            }
             else -> result.notImplemented()
         }
     }
@@ -55,13 +61,18 @@ class TencentADPlugin : MethodCallHandler {
 
         private val intersMap = HashMap<String, IntersAD>()
         private val rewardMap = HashMap<String, RewardAD>()
+        private val renderMap = HashMap<String, NativeADDIY>()
 
-        fun removeInterstitial(posId: String?) {
-            intersMap.remove(posId)
+        fun removeInterstitial(posID: String?) {
+            intersMap.remove(posID)
         }
 
-        fun removeReward(posId: String?) {
-            rewardMap.remove(posId)
+        fun removeReward(posID: String?) {
+            rewardMap.remove(posID)
+        }
+
+        fun removeRender(posID: String?) {
+            renderMap.remove(posID)
         }
 
         // 插件注册
@@ -76,7 +87,7 @@ class TencentADPlugin : MethodCallHandler {
             )
             registrar.platformViewRegistry().registerViewFactory(
                     nativeID,
-                    NativeAD.NativeADFactory(registrar.messenger())
+                    NativeAD.NativeTemplateViewFactory(registrar.messenger())
             )
         }
     }

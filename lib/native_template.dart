@@ -1,43 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'o.dart';
+import 'package:tencent_ad/o.dart';
 
-enum NativeADEvent {
-  onLayoutChange,
-  onNoAD,
-  onADLoaded,
-  onRenderFail,
-  onRenderSuccess,
-  onADExposure,
-  onADClicked,
-  onADClosed,
-  onADLeftApplication,
-  onADOpenOverlay,
-  onADCloseOverlay,
-}
-
-typedef NativeADCallback = Function(NativeADEvent event, dynamic arguments);
-
-class NativeExpressAD extends StatefulWidget {
-  NativeExpressAD({
+class NativeAD extends StatefulWidget {
+  const NativeAD({
     Key key,
     this.posID,
     this.requestCount: 5,
-    this.callback,
+    this.adEventCallback,
     this.refreshOnCreate,
   }) : super(key: key);
 
   final String posID;
-  final int requestCount; // 广告计数请求，默认值是5
-  final NativeADCallback callback;
+  final int requestCount; // 默认请求次数: 5
+  final NativeADEventCallback adEventCallback;
   final bool refreshOnCreate;
 
   @override
-  NativeExpressADState createState() => NativeExpressADState();
+  NativeADState createState() => NativeADState();
 }
 
-class NativeExpressADState extends State<NativeExpressAD> {
+class NativeADState extends State<NativeAD> {
   MethodChannel _methodChannel;
 
   @override
@@ -59,15 +43,15 @@ class NativeExpressADState extends State<NativeExpressAD> {
   }
 
   void _onPlatformViewCreated(int id) {
-    _methodChannel = MethodChannel('$nativeID\_$id');
-    _methodChannel.setMethodCallHandler(_handleMethodCall);
-    if (widget.refreshOnCreate == true) {
-      refreshAD();
+    this._methodChannel = MethodChannel('$nativeID\_$id');
+    this._methodChannel.setMethodCallHandler(_handleMethodCall);
+    if (this.widget.refreshOnCreate == true) {
+      this.refreshAD();
     }
   }
 
   Future<void> _handleMethodCall(MethodCall call) async {
-    if (widget.callback != null) {
+    if (widget.adEventCallback != null) {
       NativeADEvent event;
       switch (call.method) {
         case 'onLayoutChange':
@@ -104,50 +88,57 @@ class NativeExpressADState extends State<NativeExpressAD> {
           event = NativeADEvent.onADCloseOverlay;
           break;
       }
-      widget.callback(event, call.arguments);
+      widget.adEventCallback(event, call.arguments);
     }
   }
 
-  Future<void> closeAD() async => await _methodChannel.invokeMethod('close');
+  Future<void> closeAD() async {
+    if (_methodChannel != null) {
+      await _methodChannel.invokeMethod('close');
+    }
+  }
 
-  Future<void>refreshAD() async =>
+  Future<void> refreshAD() async {
+    if (_methodChannel != null) {
       await _methodChannel.invokeMethod('refresh');
+    }
+  }
 }
 
-class NativeExpressADWidget extends StatefulWidget {
+class NativeADWidget extends StatefulWidget {
   final String posID;
   final int requestCount;
-  final GlobalKey<NativeExpressADState> adKey;
-  final NativeADCallback adEventCallback;
+  final GlobalKey<NativeADState> adKey;
+  final NativeADEventCallback adEventCallback;
   final double loadingHeight;
 
-  NativeExpressADWidget(
-    this.posID, {
-    GlobalKey<NativeExpressADState> adKey,
+  NativeADWidget({
+    GlobalKey<NativeADState> adKey,
+    this.posID,
     this.requestCount,
     this.adEventCallback,
     this.loadingHeight: 1.0,
   }) : adKey = adKey ?? GlobalKey();
 
   @override
-  NativeExpressADWidgetState createState() =>
-      NativeExpressADWidgetState(height: loadingHeight);
+  NativeADWidgetState createState() =>
+      NativeADWidgetState(height: loadingHeight);
 }
 
-class NativeExpressADWidgetState extends State<NativeExpressADWidget> {
+class NativeADWidgetState extends State<NativeADWidget> {
   double _height;
-  NativeExpressAD _nativeAD;
+  NativeAD _ad;
 
-  NativeExpressADWidgetState({double height}) : _height = height;
+  NativeADWidgetState({double height}) : _height = height;
 
   @override
   void initState() {
     super.initState();
-    _nativeAD = NativeExpressAD(
-      key: widget.adKey,
+    _ad = NativeAD(
       posID: widget.posID,
+      key: widget.adKey,
       requestCount: widget.requestCount,
-      callback: _adEventCallback,
+      adEventCallback: _adEventCallback,
       refreshOnCreate: true,
     );
   }
@@ -156,7 +147,7 @@ class NativeExpressADWidgetState extends State<NativeExpressADWidget> {
   Widget build(BuildContext context) {
     return Container(
       height: _height,
-      child: _nativeAD,
+      child: _ad,
     );
   }
 
@@ -164,8 +155,8 @@ class NativeExpressADWidgetState extends State<NativeExpressADWidget> {
     if (widget.adEventCallback != null) {
       widget.adEventCallback(event, arguments);
     }
-    if (event == NativeADEvent.onLayoutChange && mounted) {
-      setState(() {
+    if (event == NativeADEvent.onLayoutChange && this.mounted) {
+      this.setState(() {
         _height = MediaQuery.of(context).size.width *
             arguments['height'] /
             arguments['width'];
@@ -174,3 +165,19 @@ class NativeExpressADWidgetState extends State<NativeExpressADWidget> {
     }
   }
 }
+
+enum NativeADEvent {
+  onLayoutChange,
+  onNoAD,
+  onADLoaded,
+  onRenderFail,
+  onRenderSuccess,
+  onADExposure,
+  onADClicked,
+  onADClosed,
+  onADLeftApplication,
+  onADOpenOverlay,
+  onADCloseOverlay,
+}
+
+typedef NativeADEventCallback = Function(NativeADEvent event, Map arguments);

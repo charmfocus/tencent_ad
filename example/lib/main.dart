@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
             icon: 'reward_video',
             name: '激励视频广告',
             onTap: () {
-             showDialog(
+              showDialog(
                 context: context,
                 barrierDismissible: false,
                 builder: (context) => RewardADWidget(
@@ -153,7 +153,15 @@ class _HomePageState extends State<HomePage> {
           ItemIcon(
             icon: 'origin_ad',
             name: '原生广告',
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return NativeADPage();
+                  },
+                ),
+              );
+            },
           ),
           ItemIcon(
             icon: 'splash_ad',
@@ -262,33 +270,6 @@ class ItemIcon extends StatelessWidget {
   }
 }
 
-Map<String, String> get configID {
-  switch (defaultTargetPlatform) {
-    case TargetPlatform.android:
-      return {
-        'appID': '1109716769',
-        'splashID': '7020785136977336',
-        'bannerID': '9040882216019714',
-        'intersID': '2041008945668154',
-        'rewardID': '6021002701726334',
-        'nativeID': '8041808915486340',
-      };
-      break;
-    case TargetPlatform.iOS:
-      return {
-        'appID': '',
-        'splashID': '',
-        'bannerID': '',
-        'intersID': '',
-        'rewardID': '',
-        'nativeID': '',
-      };
-      break;
-    default:
-      return {'': ''};
-  }
-}
-
 class IntersADWidget extends StatefulWidget {
   final String posID;
 
@@ -356,5 +337,164 @@ class RewardADWidgetState extends State<RewardADWidget> {
         break;
       default:
     }
+  }
+}
+
+class NativeADPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _NativeADPageState();
+}
+
+class _NativeADPageState extends State<NativeADPage> {
+  bool isToogle = true;
+
+  @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        centerTitle: true,
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Text(
+          '腾讯广告',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.values[0],
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              showMenu(
+                context: context,
+                position: RelativeRect.fromLTRB(1.0, 80.0, 0.0, 32.0),
+                items: [
+                  PopupMenuItem(
+                    child: Text(isToogle ? '单个模版+自渲染' : '自渲染&模版消息流'),
+                    value: 0,
+                  ),
+                ],
+              ).then((value) {
+                switch (value) {
+                  case 0:
+                    setState(() => isToogle = !isToogle);
+                    break;
+                  default:
+                }
+              });
+            },
+          )
+        ],
+      ),
+      body: isToogle
+          ? ListView.builder(
+              itemCount: 6,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                if (index % 2 == 0) {
+                  return NativeADWidget(posID: configID['nativeID']);
+                }
+                return Container(
+                  height: 240.0,
+                  margin: const EdgeInsets.all(8.0),
+                  color: Colors.orangeAccent,
+                );
+              },
+            )
+          : NativeRenderWidget(),
+    );
+  }
+}
+
+class NativeRenderWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _NativeRenderWidgetState();
+}
+
+class _NativeRenderWidgetState extends State<NativeRenderWidget> {
+  double adHeight;
+  bool adRemoved = false;
+  final _adKey = GlobalKey<NativeADState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: adHeight == null ? 1 : adHeight,
+          child: NativeAD(
+            key: _adKey,
+            posID: configID['nativeID'],
+            adEventCallback: (event, args) {
+              if (event == NativeADEvent.onLayoutChange && mounted) {
+                setState(() {
+                  // 根据选择的广告位模板尺寸计算，这里是1280x720
+                  adHeight = MediaQuery.of(context).size.width *
+                      args['height'] /
+                      args['width'];
+                  print(args['height']);
+                  print(args['width']);
+                });
+                return;
+              }
+              if (event == NativeADEvent.onADClosed) {
+                setState(() {
+                  adRemoved = true;
+                });
+              }
+            },
+            refreshOnCreate: true,
+            requestCount: 1,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+Map<String, String> get configID {
+  switch (defaultTargetPlatform) {
+    case TargetPlatform.android:
+      return {
+        'appID': '1109716769',
+        'splashID': '7020785136977336',
+        'bannerID': '9040882216019714',
+        'intersID': '2041008945668154',
+        'rewardID': '6021002701726334',
+        'nativeDIYID': '8041808915486340',
+        'nativeID': '7071115139492917',
+      };
+      break;
+    case TargetPlatform.iOS:
+      return {
+        'appID': '',
+        'splashID': '',
+        'bannerID': '',
+        'intersID': '',
+        'rewardID': '',
+        'nativeID': '',
+      };
+      break;
+    default:
+      return {'': ''};
   }
 }
