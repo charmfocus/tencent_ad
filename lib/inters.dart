@@ -54,7 +54,7 @@ class IntersAD {
   }
 }
 
-typedef IntersADCallback = Function(IntersADEvent event, Map arguments);
+typedef IntersADCallback = Function(IntersADEvent event, Map args);
 
 enum IntersADEvent {
   onNoAD,

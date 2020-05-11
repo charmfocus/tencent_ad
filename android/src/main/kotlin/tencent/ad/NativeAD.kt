@@ -11,7 +11,9 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
+import io.flutter.plugin.platform.PlatformViewFactory
 
 class NativeAD(
         context: Context,
@@ -50,4 +52,10 @@ class NativeAD(
     override fun onADLoaded(adDataList: MutableList<NativeUnifiedADData>) =
             methodChannel.invokeMethod("onADLoaded", adDataList)
 
+    class NativeADFactory(private val messenger: BinaryMessenger) :
+            PlatformViewFactory(StandardMessageCodec.INSTANCE) {
+        @Suppress("UNCHECKED_CAST")
+        override fun create(context: Context, viewId: Int, args: Any) = NativeAD(
+                context, messenger, viewId, args as Map<String, Any>)
+    }
 }

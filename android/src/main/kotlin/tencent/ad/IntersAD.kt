@@ -1,5 +1,6 @@
 package tencent.ad
 
+import android.util.Log
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD
 import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener
 import com.qq.e.comm.util.AdError
@@ -8,10 +9,14 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 
-class IntersAD(private val posId: String, messenger: BinaryMessenger?) :
+class IntersAD(private val posID: String, messenger: BinaryMessenger?) :
         MethodCallHandler, UnifiedInterstitialADListener {
     private var iad: UnifiedInterstitialAD? = null
-    private val methodChannel = MethodChannel(messenger, O.intersID + "_" + posId)
+    private val methodChannel = MethodChannel(messenger, "${O.intersID}_$posID")
+
+    init {
+        methodChannel.setMethodCallHandler(this)
+    }
 
     override fun onMethodCall(methodCall: MethodCall, result: MethodChannel.Result) {
         when (methodCall.method) {
@@ -33,7 +38,7 @@ class IntersAD(private val posId: String, messenger: BinaryMessenger?) :
             iad = null
         }
         methodChannel.setMethodCallHandler(null)
-        TencentADPlugin.removeInterstitial(posId)
+        TencentADPlugin.removeInterstitial(posID)
     }
 
     private val iAD: UnifiedInterstitialAD
@@ -41,7 +46,7 @@ class IntersAD(private val posId: String, messenger: BinaryMessenger?) :
             if (iad != null) {
                 return iad!!
             }
-            iad = UnifiedInterstitialAD(TencentADPlugin.activity, O.appID, posId, this)
+            iad = UnifiedInterstitialAD(TencentADPlugin.activity, O.appID, posID, this)
             return iad!!
         }
 
@@ -49,17 +54,10 @@ class IntersAD(private val posId: String, messenger: BinaryMessenger?) :
         iAD.showAsPopupWindow()
     }
 
-    override fun onNoAD(adError: AdError) {
+    override fun onNoAD(error: AdError) {
         iad = null
-        methodChannel.invokeMethod("onNoAD", adError.errorCode)
-    }
-
-    override fun onADReceive() {
-        methodChannel.invokeMethod("onADReceived", null)
-    }
-
-    override fun onADExposure() {
-        methodChannel.invokeMethod("onADExposure", null)
+        methodChannel.invokeMethod("onNoAD", null)
+        Log.i(O.TAG, "IntersAD onNoAD:无广告 错误码:${error.errorCode} ${error.errorMsg}")
     }
 
     override fun onADClosed() {
@@ -67,24 +65,11 @@ class IntersAD(private val posId: String, messenger: BinaryMessenger?) :
         methodChannel.invokeMethod("onADClosed", null)
     }
 
-    override fun onADClicked() {
-        methodChannel.invokeMethod("onADClicked", null)
-    }
+    override fun onADReceive() = methodChannel.invokeMethod("onADReceived", null)
+    override fun onADExposure() = methodChannel.invokeMethod("onADExposure", null)
+    override fun onADClicked() = methodChannel.invokeMethod("onADClicked", null)
+    override fun onADLeftApplication() = methodChannel.invokeMethod("onADLeftApplication", null)
+    override fun onADOpened() = methodChannel.invokeMethod("onADOpened", null)
+    override fun onVideoCached() = methodChannel.invokeMethod("onVideoCached", null)
 
-    override fun onADLeftApplication() {
-        methodChannel.invokeMethod("onADLeftApplication", null)
-    }
-
-    override fun onADOpened() {
-        methodChannel.invokeMethod("onADOpened", null)
-    }
-
-    override fun onVideoCached() {
-        methodChannel.invokeMethod("onVideoCached", null)
-    }
-
-
-    init {
-        methodChannel.setMethodCallHandler(this)
-    }
 }

@@ -114,7 +114,15 @@ class _HomePageState extends State<HomePage> {
           ItemIcon(
             icon: 'reward_video',
             name: '激励视频广告',
-            onTap: () {},
+            onTap: () {
+             showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => RewardADWidget(
+                  configID['rewardID'],
+                ),
+              );
+            },
           ),
           ItemIcon(
             icon: 'interstital_ad',
@@ -122,6 +130,7 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               showDialog(
                 context: context,
+                barrierDismissible: false,
                 builder: (context) => IntersADWidget(
                   configID['intersID'],
                 ),
@@ -308,6 +317,41 @@ class IntersADWidgetState extends State<IntersADWidget> {
         intersAD.showAD();
         break;
       case IntersADEvent.onADClosed:
+        Navigator.of(context).pop();
+        break;
+      default:
+    }
+  }
+}
+
+class RewardADWidget extends StatefulWidget {
+  final String posID;
+
+  RewardADWidget(this.posID);
+
+  @override
+  State<StatefulWidget> createState() => RewardADWidgetState();
+}
+
+class RewardADWidgetState extends State<RewardADWidget> {
+  RewardAD rewardAD;
+
+  @override
+  void initState() {
+    super.initState();
+    rewardAD = RewardAD(posID: widget.posID, adEventCallback: _adEventCallback);
+    rewardAD.loadAD();
+  }
+
+  @override
+  Widget build(BuildContext context) => Container();
+
+  void _adEventCallback(RewardADEvent event, Map params) {
+    switch (event) {
+      case RewardADEvent.onADLoad:
+        rewardAD.showAD();
+        break;
+      case RewardADEvent.onADClose:
         Navigator.of(context).pop();
         break;
       default:

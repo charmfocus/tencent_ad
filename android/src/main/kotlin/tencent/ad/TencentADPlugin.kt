@@ -30,10 +30,14 @@ class TencentADPlugin : MethodCallHandler {
             }
             "loadIntersAD" -> {
                 val posID = "${arguments["posID"]}"
-                if (unifiedInterstitialMap.containsKey(posID)) {
-                    unifiedInterstitialMap[posID]?.closeAD()
-                }
-                unifiedInterstitialMap[posID] = IntersAD(posID, registrar.messenger())
+                if (intersMap.containsKey(posID)) intersMap[posID]?.closeAD()
+                intersMap[posID] = IntersAD(posID, registrar.messenger())
+                result.success(true)
+            }
+            "loadRewardAD" -> {
+                val posID = "${arguments["posID"]}"
+                if (rewardMap.containsKey(posID)) rewardMap[posID]?.closeAD()
+                rewardMap[posID] = RewardAD(posID, registrar.messenger())
                 result.success(true)
             }
             else -> result.notImplemented()
@@ -49,10 +53,15 @@ class TencentADPlugin : MethodCallHandler {
         private lateinit var instance: TencentADPlugin
         internal val activity get() = registrar.activity()
 
-        private val unifiedInterstitialMap = HashMap<String, IntersAD>()
+        private val intersMap = HashMap<String, IntersAD>()
+        private val rewardMap = HashMap<String, RewardAD>()
 
         fun removeInterstitial(posId: String?) {
-            unifiedInterstitialMap.remove(posId)
+            intersMap.remove(posId)
+        }
+
+        fun removeReward(posId: String?) {
+            rewardMap.remove(posId)
         }
 
         // 插件注册
@@ -67,7 +76,7 @@ class TencentADPlugin : MethodCallHandler {
             )
             registrar.platformViewRegistry().registerViewFactory(
                     nativeID,
-                    NativeADFactory(registrar.messenger())
+                    NativeAD.NativeADFactory(registrar.messenger())
             )
         }
     }

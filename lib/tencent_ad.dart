@@ -7,6 +7,7 @@ export 'native.dart';
 export 'splash.dart';
 export 'banner.dart';
 export 'inters.dart';
+export 'reward.dart';
 
 class TencentADPlugin {
   static const MethodChannel channel = const MethodChannel(pluginID);
@@ -21,5 +22,9 @@ class TencentADPlugin {
 
   static Future<bool> toastIntersAD({@required String posID}) async {
     return await channel.invokeMethod('loadIntersAD', {'posID': posID});
+  }
+
+  static Future<bool> toastRewardAD({@required String posID}) async {
+    return await channel.invokeMethod('loadRewardAD', {'posID': posID});
   }
 }
