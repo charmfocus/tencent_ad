@@ -1,5 +1,6 @@
 package tencent.ad
 
+import com.qq.e.comm.managers.GDTADManager
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -16,6 +17,7 @@ class TencentADPlugin : MethodCallHandler {
         when (call.method) {
             "config" -> {
                 O.appID = "${arguments["appID"]}"
+                GDTADManager.getInstance().initWith(activity, O.appID)
                 result.success(true)
             }
             "showSplash" -> {

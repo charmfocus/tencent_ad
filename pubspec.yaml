@@ -1,7 +1,6 @@
 name: tencent_ad
 description: TencentAD Plugin
 version: 1.0.1
-author: Mr-Cai
 homepage: https://github.com/Mr-Cai/tencent_ad
 
 environment:

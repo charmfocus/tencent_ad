@@ -1,3 +1,17 @@
-## 0.0.1
+## [1.0.1] - 2020/05/12
+- 新增激励视频
+- 修复插屏广告
+- 修复原生模板广告
+- Android端Jar包版本(最新) 4.210.1080  
+https://bit.ly/2Liptmz
+- IOS端正在开发
+- 正在开发原生自渲染接入，可自定义UI样式
+- 修复模拟器崩溃问题
+- 下载管理正在开发
 
-* TODO: Describe initial release.
+## [1.0.0] - 2019/12/19
+- 集成Android端腾讯广告，包含横幅、插屏、渲染模版、闪屏等广告页面。
+- Android端使用的Jar包为X5增强版，4.11 
+https://bit.ly/2Liptmz
+- Android端的插屏弹窗广告目前显示异常，待解决
+- Android端运行Demo项目，自动生成的绑定插件类是Java文件，而源码是Kotlin， 调用静态方法需要手动修改为 Companion 。 - IOS端仅能运行静态页面，尚未调用到库。

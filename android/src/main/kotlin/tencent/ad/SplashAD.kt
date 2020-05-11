@@ -26,7 +26,7 @@ class SplashAD(
     private val methodChannel = MethodChannel(messenger, "${O.splashID}_$posID")
     private val container = FrameLayout(context)
 
-    fun showAD() = fetchSplashAD(activity, null, O.appID, posID, this, 0)
+    fun showAD() = fetchSplashAD(activity, null, posID, this, 0)
 
     private fun closeAD() {
         val parent = container.parent as ViewGroup
@@ -38,7 +38,6 @@ class SplashAD(
      * 拉取开屏广告，开屏广告的构造方法有3种，详细说明请参考文档。
      * @param activity        展示广告的activity
      * @param skipContainer   自定义的跳过按钮：只需绘制样式
-     * @param appID           应用ID
      * @param posID           广告位ID
      * @param adListener      广告状态监听器
      * @param fetchDelay      拉取广告的超时时长：[3000, 5000]，0为默认
@@ -47,7 +46,6 @@ class SplashAD(
     private fun fetchSplashAD(
             activity: Activity,
             skipContainer: View?,
-            appID: String,
             posID: String,
             adListener: SplashADListener,
             fetchDelay: Int
@@ -55,8 +53,8 @@ class SplashAD(
         Log.i(TAG, "fetchSplashAD: ${O.splashID}_$posID")
         if (instance != null) return
         instance = skipContainer?.let {
-            SplashAD(activity, it, appID, posID, adListener, fetchDelay)
-        } ?: SplashAD(activity, appID, posID, adListener, fetchDelay)
+            SplashAD(activity, it, posID, adListener, fetchDelay)
+        } ?: SplashAD(activity, posID, adListener, fetchDelay)
         instance!!.fetchAndShowIn(container)
         activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
     }
