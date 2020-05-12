@@ -20,7 +20,8 @@
 - 原生自渲染<正在开发>
 
 ### 截图
-<img src="./screen/main.jpg" alt="主菜单" style="width:200px;" height="400px"/><img src="./screen/interstitial_ad.jpg" alt="插屏广告" style="width:200px;" height="400px"/><img src="./screen/reward_ad.jpg" alt="激励视频" style="width:200px;" height="400px"/><img src="./screen/splash_ad.jpg" alt="闪屏广告" style="width:200px;" height="400px"/>
+<img src="./screen/main.jpg" alt="主菜单" style="width:200px;" height="400px"/><img src="./screen/interstitial_ad.jpg" alt="插屏广告" style="width:200px;" height="400px"/><img src="./screen/reward_ad.jpg" alt="激励视频" style="width:200px;" height="400px"/><img src="./screen/splash_ad.jpg" alt="闪屏广告" style="width:200px;" height="400px"/> 
+
 <img src="./screen/native_ad_list.jpg" alt="原生模板广告列表" style="width:200px;" height="400px"/><img src="./screen/banner_ad.jpg" alt="横幅广告" style="width:200px;" height="400px"/>
 
 # 安装
