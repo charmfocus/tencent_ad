@@ -1,6 +1,6 @@
 # TencentAD
 [![version](https://img.shields.io/badge/version-1.0.1-green)](https://pub.dartlang.org/packages/admob_flutter)
-[![GitHub stars](https://img.shields.io/github/stars/Mr-Cai/tencent_ad?style=social&label=Star)](https://github.com/Mr-Cai/tencent_ad)
+[![GitHub stars](https://img.shields.io/github/stars/Mr-Cai/tencent_ad?style=social&label=Star)](https://pub.dev/packages/tencent_ad)
 [![GitHub forks](https://img.shields.io/github/forks/Mr-Cai/tencent_ad?style=social&label=Forks)](https://github.com/Mr-Cai/tencent_ad)
 [![GitHub issues](https://img.shields.io/github/issues/Mr-Cai/tencent_ad?style=social&label=Issues)](https://github.com/Mr-Cai/tencent_ad)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FTwCai)](https://twitter.com/TwCai)
