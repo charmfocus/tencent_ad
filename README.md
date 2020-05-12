@@ -27,7 +27,6 @@
 <img src="./screen/native_ad_list.jpg" alt="原生模板广告列表" style="width:200px;" height="400px"/>
 <img src="./screen/banner_ad.jpg" alt="横幅广告" style="width:200px;" height="400px"/>
 
-
 # 安装
 
 1. 添加插件包在pubspec.yaml文件:
