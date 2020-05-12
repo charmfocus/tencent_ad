@@ -70,7 +70,6 @@ class NativeAD(
         nativeExpressAD = NativeExpressAD(
                 TencentADPlugin.activity,
                 ADSize(ADSize.FULL_WIDTH, ADSize.AUTO_HEIGHT),
-                O.appID,
                 posID,
                 this
         )

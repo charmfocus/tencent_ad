@@ -41,7 +41,7 @@ class RewardAD(
     }
 
     private fun loadRewardVideo(isOpenVolume: Boolean = false): RewardVideoAD {
-        rewardVideoAD = RewardVideoAD(activity, O.appID, posID, this, isOpenVolume)
+        rewardVideoAD = RewardVideoAD(activity, posID, this, isOpenVolume)
         return rewardVideoAD
     }
 

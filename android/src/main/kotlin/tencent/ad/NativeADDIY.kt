@@ -45,7 +45,7 @@ class NativeADDIY(
     }
 
     private fun loadAD() {
-        nativeUnifiedAD = NativeUnifiedAD(context, O.appID, O.nativeDIYID, this)
+        nativeUnifiedAD = NativeUnifiedAD(context, O.nativeDIYID, this)
         nativeUnifiedAD.run {
             setMinVideoDuration(0)
             setMaxVideoDuration(0)
@@ -54,11 +54,11 @@ class NativeADDIY(
             loadData(1)
         }
     }
-
-    fun closeAD() {
-        methodChannel.setMethodCallHandler(null)
-        TencentADPlugin.removeRender(posID)
-    }
+//
+//    fun closeAD() {
+//        methodChannel.setMethodCallHandler(null)
+//        TencentADPlugin.removeRender(posID)
+//    }
 
     override fun onNoAD(error: AdError) = methodChannel.invokeMethod("onNoAD", null)
 

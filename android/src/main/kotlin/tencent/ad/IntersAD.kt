@@ -48,7 +48,7 @@ class IntersAD(
             if (intersAD != null) {
                 return intersAD!!
             }
-            intersAD = UnifiedInterstitialAD(TencentADPlugin.activity, O.appID, posID, this)
+            intersAD = UnifiedInterstitialAD(TencentADPlugin.activity, posID, this)
             return intersAD!!
         }
 

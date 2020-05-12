@@ -23,7 +23,7 @@ class BannerAD(messenger: BinaryMessenger,
                params: Map<String, Any>
 ) : PlatformView, MethodCallHandler, UnifiedBannerADListener {
     private val posID = "${params["posID"]}"
-    private val bannerView = UnifiedBannerView(activity, O.appID, this.posID, this)
+    private val bannerView = UnifiedBannerView(activity, this.posID, this)
     private val methodChannel = MethodChannel(messenger, "${O.bannerID}_$posID")
 
     init {
