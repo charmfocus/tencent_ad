@@ -24,20 +24,10 @@
 
 # 安装
 
-1. 添加插件包在pubspec.yaml文件:
+1. 捐助扫码    
+![](https://pic.downk.cc/item/5e992b50c2a9a83be525fdd1.png)
 
-```dart
-dependencies:
-  tencent_ad: ^1.0.1
-```
-
-2. 获取插件源码, 运行命令:
-
-```dart
-$ flutter pub get
-```
-
-3. 使用示例:
+2. 使用示例:
 
 - 配置ID&导入包
 ```dart
