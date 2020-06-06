@@ -502,18 +502,19 @@ Map<String, String> get configID {
         'bannerID': '9040882216019714',
         'intersID': '2041008945668154',
         'rewardID': '6021002701726334',
-        'nativeDIYID': '8041808915486340',
         'nativeID': '7071115139492917',
+        'nativeDIYID': '8041808915486340',
       };
       break;
     case TargetPlatform.iOS:
       return {
-        'appID': '',
-        'splashID': '',
-        'bannerID': '',
-        'intersID': '',
-        'rewardID': '',
-        'nativeID': '',
+        'appID': '1105344611',
+        'splashID': '9040714184494018',
+        'bannerID': '1080958885885321',
+        'intersID': '1050652855580392',
+        'rewardID': '9040714184494018',
+        'nativeID': '1020922903364636',
+        'nativeDIYID': '',
       };
       break;
     default:

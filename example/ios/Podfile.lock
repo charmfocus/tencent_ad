@@ -1,0 +1,31 @@
+PODS:
+  - Flutter (1.0.0)
+  - GDTMobSDK (4.11.8):
+    - GDTMobSDK/GDTMobSDK (= 4.11.8)
+  - GDTMobSDK/GDTMobSDK (4.11.8)
+  - tencent_ad (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - GDTMobSDK (~> 4.11.8)
+  - tencent_ad (from `.symlinks/plugins/tencent_ad/ios`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - GDTMobSDK
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  tencent_ad:
+    :path: ".symlinks/plugins/tencent_ad/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  GDTMobSDK: 8961a9c5ea9303d4ffc9ef2ee44cc120359a1c8d
+  tencent_ad: e90308d6cfa566d51f7e2b93c8031ce5795b5cdb
+
+PODFILE CHECKSUM: 8ca139b4e37ac745937a3399b0ea62c6f9bbb23e
+
+COCOAPODS: 1.9.3
