@@ -54,11 +54,6 @@ class NativeADDIY(
             loadData(1)
         }
     }
-//
-//    fun closeAD() {
-//        methodChannel.setMethodCallHandler(null)
-//        TencentADPlugin.removeRender(posID)
-//    }
 
     override fun onNoAD(error: AdError) = methodChannel.invokeMethod("onNoAD", null)
 

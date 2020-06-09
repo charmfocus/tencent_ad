@@ -73,10 +73,6 @@ class TencentADPlugin : MethodCallHandler {
             rewardMap.remove(posID)
         }
 
-        fun removeRender(posID: String?) {
-            renderMap.remove(posID)
-        }
-
         // 插件注册
         @JvmStatic
         fun registerWith(registrar: Registrar) {
