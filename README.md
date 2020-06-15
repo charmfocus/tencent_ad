@@ -6,7 +6,10 @@
 [![GitHub issues](https://img.shields.io/github/issues/Mr-Cai/tencent_ad?style=social&label=Issues)](https://github.com/Mr-Cai/tencent_ad)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FTwCai)](https://twitter.com/TwCai)
 
-腾讯广告优量汇插件
+# 腾讯广告优量汇插件
+
+##### 录屏演示
+<img src="https://raw.githubusercontent.com/Mr-Cai/tencent_ad/master/screen/example.webp" alt="演示" style="width:200px;" height="400px"/>
 
 ### 支持平台
 - Android
@@ -21,10 +24,7 @@
 - 原生自渲染<开发中>
 
 ### 捐助扫码    
-![](https://pic.downk.cc/item/5e992b50c2a9a83be525fdd1.png)
-
-### 录屏演示
-![演示](https://raw.githubusercontent.com/Mr-Cai/tencent_ad/master/screen/example.webp)
+<img src="https://pic.downk.cc/item/5e992b50c2a9a83be525fdd1.png" alt="捐助扫码" style="width:320px;" height="180px"/>
 
 ## 使用示例
 
