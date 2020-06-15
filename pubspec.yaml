@@ -1,6 +1,6 @@
 name: tencent_ad
 description: TencentAD Plugin GDT Plugin 腾讯广告 优量汇 广点通插件
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/Mr-Cai/tencent_ad
 
 environment:

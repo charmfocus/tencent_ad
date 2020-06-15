@@ -1,5 +1,6 @@
 # TencentAD
-[![version](https://img.shields.io/badge/version-1.0.1-green)](https://pub.dev/packages/tencent_ad)
+[![Pub Version](https://img.shields.io/pub/v/tencent_ad)](https://pub.dev/packages/tencent_ad)
+
 [![GitHub stars](https://img.shields.io/github/stars/Mr-Cai/tencent_ad?style=social&label=Star)](https://github.com/Mr-Cai/tencent_ad)
 [![GitHub forks](https://img.shields.io/github/forks/Mr-Cai/tencent_ad?style=social&label=Forks)](https://github.com/Mr-Cai/tencent_ad)
 [![GitHub issues](https://img.shields.io/github/issues/Mr-Cai/tencent_ad?style=social&label=Issues)](https://github.com/Mr-Cai/tencent_ad)
@@ -9,7 +10,7 @@
 
 ### 支持平台
 - Android
-- IOS <待开发>
+- IOS <开发中>
 
 ### 支持腾讯广告特性
 - 闪屏广告
@@ -17,15 +18,15 @@
 - 插屏广告
 - 激励视频
 - 原生模板
-- 原生自渲染<正在开发>
+- 原生自渲染<开发中>
 
 ### 捐助扫码    
 ![](https://pic.downk.cc/item/5e992b50c2a9a83be525fdd1.png)
 
-### 截图
-<img src="./screen/main.jpg" alt="主菜单" style="width:200px;" height="400px"/><img src="./screen/interstitial_ad.jpg" alt="插屏广告" style="width:200px;" height="400px"/><img src="./screen/reward_ad.jpg" alt="激励视频" style="width:200px;" height="400px"/><img src="./screen/splash_ad.jpg" alt="闪屏广告" style="width:200px;" height="400px"/><img src="./screen/native_ad_list.jpg" alt="原生模板广告列表" style="width:200px;" height="400px"/><img src="./screen/banner_ad.jpg" alt="横幅广告" style="width:200px;" height="400px"/>
+### 录屏演示
+![演示](./screen/example.webp)
 
-# 使用示例
+## 使用示例
 
 - 配置ID&导入包
 ```dart
@@ -40,8 +41,8 @@ Map<String, String> get configID {
         'bannerID': '你的ID',
         'intersID': '你的ID',
         'rewardID': '你的ID',
-        'nativeDIYID': '你的ID',
         'nativeID': '你的ID',
+        'nativeDIYID': '你的ID',
       };
       break;
     case TargetPlatform.iOS:
@@ -52,6 +53,7 @@ Map<String, String> get configID {
         'intersID': '你的ID',
         'rewardID': '你的ID',
         'nativeID': '你的ID',
+        'nativeDIYID': '你的ID',
       };
       break;
     default:

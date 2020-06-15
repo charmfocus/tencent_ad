@@ -437,7 +437,7 @@ class _NativeADPageState extends State<NativeADPage> {
                 }
                 return Container(
                   height: 240.0,
-                  margin: const EdgeInsets.all(8.0),
+                  margin: const EdgeInsets.all(9.0),
                   color: Colors.orangeAccent,
                 );
               },
