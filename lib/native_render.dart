@@ -31,7 +31,7 @@ class NativeRenderAD {
   }
 
   Future<Object> loadAD() async {
-   return await _channel.invokeMethod('load');
+    return await _channel.invokeMethod('load');
   }
 
   Future<void> destroyAD() async {
