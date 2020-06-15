@@ -24,7 +24,7 @@
 ![](https://pic.downk.cc/item/5e992b50c2a9a83be525fdd1.png)
 
 ### 录屏演示
-![演示](./screen/example.webp)
+![演示](https://raw.githubusercontent.com/Mr-Cai/tencent_ad/master/screen/example.webp)
 
 ## 使用示例
 
