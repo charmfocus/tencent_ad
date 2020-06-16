@@ -1,10 +1,8 @@
 name: tencent_ad
-description: "腾讯广告优量汇插件(tencent_ad)是帮助中国大陆开发者使用Flutter
-开发App时，方便实现广告盈利的。腾讯优量汇广告官方并未提供Flutter相关插件，
-仅提供原生App接入文档，所以这里属于个人开发的插件。本插件提供了广告SDK的桥梁。
-欢迎指正，共同进步。"
+description: "The plugin is bridge of the official SDK,
+allowing Chinese developers to make money"
 
-version: 1.0.2
+version: 1.0.2+3
 homepage: https://github.com/Mr-Cai/tencent_ad
 
 environment:
