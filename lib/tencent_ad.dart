@@ -1,14 +1,18 @@
 import 'dart:async';
-import 'package:flutter/services.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tencent_ad/o.dart';
-export 'tencent_ad.dart';
-export 'native_render.dart';
-export 'native_template.dart';
-export 'splash.dart';
+
 export 'banner.dart';
 export 'inters.dart';
+export 'native_render.dart';
+export 'native_template.dart';
+export 'o.dart';
 export 'reward.dart';
+export 'splash.dart';
+export 'splash_ad_view.dart';
+export 'tencent_ad.dart';
 
 class TencentADPlugin {
   static const MethodChannel channel = const MethodChannel(pluginID);

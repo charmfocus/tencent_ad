@@ -20,16 +20,18 @@ class TencentADPlugin : MethodCallHandler {
                 GDTADManager.getInstance().initWith(activity, O.appID)
                 result.success(true)
             }
-            "showSplash" -> {
-                val posID = "${arguments["posID"]}"
-                SplashAD(
-                        registrar.activity(),
-                        registrar.messenger(),
-                        posID,
-                        null
-                ).showAD()
-                result.success(true)
-            }
+//            "showSplash" -> {
+//                val posID = "${arguments["posID"]}"
+//                SplashAD(
+//                        registrar.activity(),
+//                        registrar.context(),
+//                        registrar.messenger(),
+//                        posID,
+//                        null,
+//                        null
+//                ).showAD(null)
+//                result.success(true)
+//            }
             "loadIntersAD" -> {
                 val posID = "${arguments["posID"]}"
                 if (intersMap.containsKey(posID)) intersMap[posID]?.closeAD()
@@ -87,6 +89,14 @@ class TencentADPlugin : MethodCallHandler {
                     nativeID,
                     NativeAD.NativeTemplateViewFactory(registrar.messenger())
             )
+            setupViews(registrar)
+        }
+
+        private fun setupViews(registrar: Registrar) {
+            //注册开屏广告UI插件
+            val factory = SplashADFactory(registrar.activity(), registrar.messenger())
+            registrar.platformViewRegistry().registerViewFactory("plugins.tencent.ads/splashadview", factory)
+
         }
     }
 }

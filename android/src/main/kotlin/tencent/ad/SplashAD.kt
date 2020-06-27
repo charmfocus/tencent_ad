@@ -13,20 +13,23 @@ import com.qq.e.ads.splash.SplashAD
 import com.qq.e.ads.splash.SplashADListener
 import com.qq.e.comm.util.AdError
 import io.flutter.plugin.common.BinaryMessenger
+import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugin.platform.PlatformView
 import tencent.ad.O.TAG
-import tencent.ad.TencentADPlugin.Companion.activity
 
 class SplashAD(
-        context: Context,
-        messenger: BinaryMessenger?,
-        private val posID: String,
-        private var instance: SplashAD?
-) : SplashADListener {
-    private val methodChannel = MethodChannel(messenger, "${O.splashID}_$posID")
+        private val activity: Activity,
+        private val context: Context,
+        private val messenger: BinaryMessenger?,
+        private val posID: String?,
+        private var instance: SplashAD?,
+        private val id: Int?
+) : SplashADListener, PlatformView, MethodChannel.MethodCallHandler {
+    private var methodChannel: MethodChannel
     private val container = FrameLayout(context)
 
-    fun showAD() = fetchSplashAD(activity, null, posID, this, 0)
+    fun showAD(posID: String?) = fetchSplashAD(activity, null, posID ?: this.posID!!, this, 0)
 
     private fun closeAD() {
         val parent = container.parent as ViewGroup
@@ -56,12 +59,21 @@ class SplashAD(
             SplashAD(activity, it, posID, adListener, fetchDelay)
         } ?: SplashAD(activity, posID, adListener, fetchDelay)
         instance!!.fetchAndShowIn(container)
-        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+//        activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
     }
 
     init {
+        val key = if (posID == null || posID.isEmpty()) {
+            "${O.splashID}_${id}"
+        } else {
+            "${O.splashID}_${posID}"
+        }
+
+        methodChannel = MethodChannel(messenger, key)
+        methodChannel.setMethodCallHandler(this)
+        container.layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         container.setBackgroundColor(Color.WHITE)
-        activity.addContentView(container, LayoutParams(MATCH_PARENT, MATCH_PARENT))
+//        activity.addContentView(container, LayoutParams(MATCH_PARENT, MATCH_PARENT))
     }
 
     override fun onADExposure() = methodChannel.invokeMethod("onADExposure", null)
@@ -79,5 +91,22 @@ class SplashAD(
         methodChannel.invokeMethod("onNoAD", null)
         Log.i(TAG, "SplashAD onNoAD:无广告 错误码:${error.errorCode} ${error.errorMsg}")
         closeAD()
+    }
+
+    override fun getView(): View {
+        return container
+    }
+
+    override fun dispose() {
+    }
+
+    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        when (call.method) {
+            "loadAd" -> {
+                val posID = call.argument<String>("posID")
+                showAD(posID)
+            }
+            else -> result.notImplemented()
+        }
     }
 }

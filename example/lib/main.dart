@@ -20,25 +20,26 @@ class _TencentADAppState extends State<TencentADApp> {
   @override
   void initState() {
     // 闪屏广告示例
-    TencentADPlugin.config(appID: '1109716769').then(
-      (_) => SplashAD(
-          posID: configID['splashID'],
-          callBack: (event, args) {
-            switch (event) {
-              case SplashADEvent.onNoAD:
-              case SplashADEvent.onADDismissed:
-                SystemChrome.setEnabledSystemUIOverlays([
-                  SystemUiOverlay.top,
-                  SystemUiOverlay.bottom,
-                ]);
-                SystemChrome.setSystemUIOverlayStyle(
-                  SystemUiOverlayStyle(statusBarColor: Colors.transparent),
-                );
-                break;
-              default:
-            }
-          }).showAD(),
-    );
+    TencentADPlugin.config(appID: '1109716769');
+//    .then(
+//      (_) => SplashAD(
+//          posID: configID['splashID'],
+//          callBack: (event, args) {
+//            switch (event) {
+//              case SplashADEvent.onNoAD:
+//              case SplashADEvent.onADDismissed:
+//                SystemChrome.setEnabledSystemUIOverlays([
+//                  SystemUiOverlay.top,
+//                  SystemUiOverlay.bottom,
+//                ]);
+//                SystemChrome.setSystemUIOverlayStyle(
+//                  SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+//                );
+//                break;
+//              default:
+//            }
+//          }).showAD(),
+//    );
     super.initState();
   }
 
@@ -46,7 +47,59 @@ class _TencentADAppState extends State<TencentADApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: SplashPage(),
+    );
+  }
+}
+
+class SplashPage extends StatefulWidget {
+  @override
+  _SplashPageState createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+                flex: 9,
+                child: SplashAdView(
+                  posID: configID['splashID'],
+                  callback: (SplashADEvent event, dynamic arguments) {
+                    print(event);
+                    switch (event) {
+                      case SplashADEvent.onADPresent:
+                        // TODO: Handle this case.
+                        break;
+                      case SplashADEvent.onADLoaded:
+                        // TODO: Handle this case.
+                        break;
+                      case SplashADEvent.onADClicked:
+                        // TODO: Handle this case.
+                        break;
+                      case SplashADEvent.onADTick:
+                        // TODO: Handle this case.
+                        break;
+                      case SplashADEvent.onADDismissed:
+                      case SplashADEvent.onNoAD:
+                      case SplashADEvent.onADExposure:
+                        //jump
+                        break;
+                    }
+                  },
+                )),
+            Expanded(
+              flex: 1,
+              child: Container(
+                child: Text('介绍'),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -169,24 +222,24 @@ class _HomePageState extends State<HomePage> {
             icon: 'splash_ad',
             name: '闪屏广告',
             onTap: () {
-              SplashAD(
-                  posID: configID['splashID'],
-                  callBack: (event, args) {
-                    switch (event) {
-                      case SplashADEvent.onNoAD:
-                      case SplashADEvent.onADDismissed:
-                        SystemChrome.setEnabledSystemUIOverlays([
-                          SystemUiOverlay.top,
-                          SystemUiOverlay.bottom,
-                        ]);
-                        SystemChrome.setSystemUIOverlayStyle(
-                          SystemUiOverlayStyle(
-                              statusBarColor: Colors.transparent),
-                        );
-                        break;
-                      default:
-                    }
-                  }).showAD();
+//              SplashAD(
+//                  posID: configID['splashID'],
+//                  callBack: (event, args) {
+//                    switch (event) {
+//                      case SplashADEvent.onNoAD:
+//                      case SplashADEvent.onADDismissed:
+//                        SystemChrome.setEnabledSystemUIOverlays([
+//                          SystemUiOverlay.top,
+//                          SystemUiOverlay.bottom,
+//                        ]);
+//                        SystemChrome.setSystemUIOverlayStyle(
+//                          SystemUiOverlayStyle(
+//                              statusBarColor: Colors.transparent),
+//                        );
+//                        break;
+//                      default:
+//                    }
+//                  }).showAD();
             },
           ),
         ],
@@ -261,7 +314,7 @@ class ItemIcon extends StatelessWidget {
             child: SvgPicture.asset(
               'assets/svg/$icon.svg',
               width: 88.0,
-              height: 88.0,
+              height: 80.0,
               fit: BoxFit.cover,
             ),
           ),

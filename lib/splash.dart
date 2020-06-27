@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'tencent_ad.dart';
+
 import 'o.dart';
+import 'tencent_ad.dart';
 
 class SplashAD {
   MethodChannel _methodChannel;
@@ -48,16 +49,3 @@ class SplashAD {
     await TencentADPlugin.channel.invokeMethod('showSplash', {'posID': posID});
   }
 }
-
-enum SplashADEvent {
-  onADExposure,
-  onADPresent,
-  onADLoaded,
-  onADClicked,
-  onADTick,
-  onADDismissed,
-  onNoAD,
-}
-
-typedef SplashADEventCallback = Function(
-    SplashADEvent event, dynamic arguments);
