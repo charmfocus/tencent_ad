@@ -7,12 +7,16 @@ class NativeAD extends StatefulWidget {
   const NativeAD({
     Key key,
     this.posID,
+    this.width,
+    this.height,
     this.requestCount: 5,
     this.adEventCallback,
     this.refreshOnCreate,
   }) : super(key: key);
 
   final String posID;
+  final double width;
+  final double height;
   final int requestCount; // 默认请求次数: 5
   final NativeADEventCallback adEventCallback;
   final bool refreshOnCreate;
@@ -22,24 +26,34 @@ class NativeAD extends StatefulWidget {
 }
 
 class NativeADState extends State<NativeAD> {
+  Size size;
   MethodChannel _methodChannel;
 
   @override
   Widget build(BuildContext context) {
+    Widget view;
+    size ??= MediaQuery.of(context).size;
+    var width = widget.width == 0 ? size.width : widget.width;
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return UiKitView(
+      view = UiKitView(
         viewType: '$nativeID',
         onPlatformViewCreated: _onPlatformViewCreated,
         creationParams: {'posID': widget.posID, 'count': widget.requestCount},
         creationParamsCodec: StandardMessageCodec(),
       );
     }
-    return AndroidView(
+    view = AndroidView(
       viewType: '$nativeID',
       onPlatformViewCreated: _onPlatformViewCreated,
       creationParams: {'posID': widget.posID, 'count': widget.requestCount},
       creationParamsCodec: const StandardMessageCodec(),
     );
+    return Container(
+      height: widget.height ?? 0,
+      width: width,
+      child: view,
+    );
+
   }
 
   void _onPlatformViewCreated(int id) {

@@ -25,25 +25,35 @@ class BannerAD extends StatefulWidget {
 
 class BannerADState extends State<BannerAD> {
   MethodChannel _methodChannel;
+  Size size;
 
   @override
   Widget build(BuildContext context) {
+    size ??= MediaQuery
+        .of(context)
+        .size;
+    var _width = widget.width;
+    if (_width == null || _width == 0) {
+      _width = size.width;
+    }
+
+    var _height = widget.height ?? 64.0;
     return Container(
-      width: widget.width ?? double.infinity,
-      height: widget.height ?? 64.0,
+      width: _width,
+      height: _height,
       child: defaultTargetPlatform == TargetPlatform.iOS
           ? UiKitView(
-              viewType: '$bannerID',
-              onPlatformViewCreated: _onPlatformViewCreated,
-              creationParams: {'posID': widget.posID},
-              creationParamsCodec: StandardMessageCodec(),
-            )
+        viewType: '$bannerID',
+        onPlatformViewCreated: _onPlatformViewCreated,
+        creationParams: {'posID': widget.posID},
+        creationParamsCodec: StandardMessageCodec(),
+      )
           : AndroidView(
-              viewType: '$bannerID',
-              onPlatformViewCreated: _onPlatformViewCreated,
-              creationParams: {'posID': widget.posID},
-              creationParamsCodec: StandardMessageCodec(),
-            ),
+        viewType: '$bannerID',
+        onPlatformViewCreated: _onPlatformViewCreated,
+        creationParams: {'posID': widget.posID},
+        creationParamsCodec: StandardMessageCodec(),
+      ),
     );
   }
 
@@ -89,6 +99,7 @@ class BannerADState extends State<BannerAD> {
   }
 
   Future<void> closeAD() async => await _methodChannel.invokeMethod('destroy');
+
   Future<void> loadAD() async => await _methodChannel.invokeMethod('loadAD');
 }
 
